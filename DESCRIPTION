@@ -1,17 +1,17 @@
 Package: BiocWorkflowTools
 Title: Tools to aid the development of Bioconductor Workflow packages
-Version: 1.1.0
-Authors@R: person("Mike", "Smith", email = "grimbough@gmail.com", role
-        = c("aut", "cre"))
+Version: 1.1.1
+Encoding: UTF-8
+Authors@R: c(
+  person("Mike", "Smith", email = "grimbough@gmail.com", role = c("aut","cre")),
+  person("Andrzej", "Oleś", email = "andrzej.oles@embl.de", role = "aut"))
 Description: Provides functions to ease the transition between
         Rmarkdown and LaTeX documents when authoring a Bioconductor
         Workflow.
 License: MIT + file LICENSE
 Depends: R (>= 3.3)
-Imports: rmarkdown, tools, stringr, httr, knitr, utils
+Imports: bookdown, rmarkdown, tools, stringr, httr, knitr, utils
 NeedsCompilation: no
-Author: Mike Smith [aut, cre]
-Maintainer: Mike Smith <grimbough@gmail.com>
 VignetteBuilder: knitr
 Suggests: BiocStyle
 biocViews: Software, ReportWriting
