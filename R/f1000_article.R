@@ -31,7 +31,8 @@ f1000_article <- function(toc = FALSE,
                                         number_sections,
                                         keep_tex,
                                         ...) {
-    template <- system.file('rmarkdown', 'templates', 'f1000_article', "resources", "template.tex",
+    
+    template <- system.file("rmarkdown", "templates", "f1000_article", "resources", "template.tex",
                             package = "BiocWorkflowTools")
     
     config <- rmarkdown::pdf_document(toc = toc,
@@ -41,7 +42,18 @@ f1000_article <- function(toc = FALSE,
                                       ...)
     
     config$post_processor <- function(metadata, input, output, clean, verbose) {
-      .processPandocTables(output, output)
+      lines <- readUTF8(output)
+      
+      ## insert author affiliations
+      lines <- BiocStyle:::modifyLines(lines,
+                                       from = '%% AUTH AFFIL %%',
+                                       insert = BiocStyle:::auth_affil_latex(metadata))
+      
+      ## convert instances of \longtable to \table
+      lines <- .processPandocTables(lines)
+      
+      writeUTF8(lines, output)
+      
       output
     }
     

@@ -38,23 +38,7 @@ $if(title)$
 $endif$
 
 $if(author)$
-\usepackage{authblk}
-$if(address)$
-$for(author)$
-\author[$author.affiliation$]{$author.name$}
-$endfor$
-$for(address)$
-\affil[$address.code$]{$address.address$}
-$endfor$
-$else$
-$for(author)$
-$if(author.name)$
-\author{$author.name$}
-$else$
-\author{$author$}
-$endif$
-$endfor$ 
-$endif$
+%% AUTH AFFIL %%
 $endif$
 
 $for(header-includes)$

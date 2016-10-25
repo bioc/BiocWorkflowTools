@@ -74,7 +74,9 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
                    output = tmp_file2)
     ## pandoc uses a different table format to the F1000 template, 
     ## so we'll try to modify it
-    .processPandocTables(input = tmp_file2, output = output_file)
+    lines <- readUTF8(tmp_file2)
+    lines <- .processPandocTables(lines)
+    writeUTF8(lines, output_file)
     ## move any external pictures and bibtex files etc
     .copyExternalResources(rmd = input, dest = output)
     ## if we created some plots in the temp dir, 
@@ -114,10 +116,8 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
 #' and the original lines removed.
 #' 
 #' @importFrom stringr str_detect
-.processPandocTables <- function(input, output) {
-    
-    lines <- readLines(input, warn = FALSE)
-    
+.processPandocTables <- function(lines) {
+  
     ## find lines marking start and end of \longtable chunks and create a list of duples
     longtableLines <- which(str_detect(string = lines, pattern= "(\\\\begin|\\\\end)\\{longtable\\}.*$"))
     ## we do nothing if there are no tables
@@ -136,7 +136,8 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
         rm_lines <- unlist(lapply(longtableLines, function(x) { (x[1]+1):(x[2]) }))
         lines <- lines[ -rm_lines ]
     }
-    writeLines(lines, con = output)
+    
+    lines
 }
 
 
