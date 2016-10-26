@@ -10,6 +10,7 @@ documentclass: extarticle
 fontsize: 9pt
 papersize: a4
 output: BiocWorkflowTools::f1000_article
+citationoptions: numbers
 ---
 
 # Introduction
