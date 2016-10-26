@@ -4,14 +4,18 @@
 \alias{f1000_article}
 \title{F1000 article format}
 \usage{
-f1000_article(toc = FALSE, number_sections = FALSE, keep_tex = TRUE, ...)
+f1000_article(toc = FALSE, number_sections = FALSE, keep_tex = TRUE,
+  extra_dependencies = NULL, ...)
 }
 \arguments{
-\item{toc}{TRUE to include a table of contents in the output}
+\item{toc}{\code{TRUE} to include a table of contents in the output}
 
-\item{number_sections}{TRUE to number section headings}
+\item{number_sections}{\code{TRUE} to number section headings}
 
 \item{keep_tex}{Keep the intermediate tex file used in the conversion to PDF}
+
+\item{extra_dependencies}{Add \code{latex_dependency()} dependencies. It can
+can be used to add custom LaTeX packages to the .tex header.}
 
 \item{...}{Arguments to \code{rmarkdown::pdf_document}}
 }

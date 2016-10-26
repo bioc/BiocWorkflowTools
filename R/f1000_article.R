@@ -5,9 +5,6 @@
 #' Creates a latex file that can be uploaded to F1000 Overleaf
 #' 
 #' @inheritParams rmarkdown::pdf_document
-#' @param toc TRUE to include a table of contents in the output
-#' @param number_sections TRUE to number section headings
-#' @param keep_tex Keep the intermediate tex file used in the conversion to PDF
 #' @param ... Arguments to \code{rmarkdown::pdf_document}
 #' 
 #' @return R Markdown output format to pass to
@@ -20,16 +17,19 @@
 #' }
 #'
 #' @importFrom bookdown pdf_book
+#' @importFrom rmarkdown includes_to_pandoc_args
 #' 
 #' @export
 f1000_article <- function(toc = FALSE,
                           number_sections = FALSE,
                           keep_tex = TRUE,
+                          extra_dependencies = NULL,
                           ...) {
   
   base_format_postprocessed <- function(toc,
                                         number_sections,
                                         keep_tex,
+                                        extra_dependencies,
                                         ...) {
     
     template <- system.file("rmarkdown", "templates", "f1000_article", "resources", "template.tex",
@@ -39,7 +39,45 @@ f1000_article <- function(toc = FALSE,
                                       number_sections = number_sections,
                                       keep_tex = keep_tex,
                                       template = template,
+                                      extra_dependencies = extra_dependencies,
                                       ...)
+    
+    ## preprocessor to set pandoc variables
+    config$pre_processor <- function(metadata, input_file, runtime, knit_meta, files_dir, output_dir) {
+      browser()
+      args <- c()
+      
+      defaults <- list(
+        documentclass = "extarticle",
+        fontsize = "9pt",
+        papersize = "a4",
+        citationoptions = "numbers"
+      )
+      
+      ## set to default if not specified in document header
+      vars <- defaults[!names(defaults) %in% names(metadata)]
+      
+      ## format as pandoc command-line args
+      if (length(vars) > 0L) {
+        vars <- paste(names(vars), vars, sep=":")
+        vars <- c(rbind(rep("--variable", length(vars)), vars))
+        args <- c(args, vars)
+      }
+      
+      ## following code copied from 'pdf_pre_processor' defined in 'rmarkdown::pdf_document'
+      format_deps <- list()
+      format_deps <- append(format_deps, extra_dependencies)
+      
+      if (rmarkdown:::has_latex_dependencies(knit_meta)) {
+        all_dependencies <- if (is.null(format_deps)) list() else format_deps
+        all_dependencies <- append(all_dependencies, rmarkdown:::flatten_latex_dependencies(knit_meta))
+        filename <- tempfile()
+        rmarkdown:::latex_dependencies_as_text_file(all_dependencies, filename)
+        args <- c(args, includes_to_pandoc_args(includes(in_header = filename)))
+      }
+      
+      args
+    }
     
     config$post_processor <- function(metadata, input, output, clean, verbose) {
       lines <- readUTF8(output)
@@ -64,6 +102,7 @@ f1000_article <- function(toc = FALSE,
   pdf_book(toc = toc,
            number_sections = number_sections,
            keep_tex = keep_tex,
+           extra_dependencies = extra_dependencies,
            ...,
            base_format = base_format_postprocessed)
   
