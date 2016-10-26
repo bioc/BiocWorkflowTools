@@ -44,7 +44,6 @@ f1000_article <- function(toc = FALSE,
     
     ## preprocessor to set pandoc variables
     config$pre_processor <- function(metadata, input_file, runtime, knit_meta, files_dir, output_dir) {
-      browser()
       args <- c()
       
       defaults <- list(
