@@ -5,7 +5,7 @@
 \title{F1000 article format}
 \usage{
 f1000_article(toc = FALSE, number_sections = FALSE, keep_tex = TRUE,
-  extra_dependencies = NULL, ...)
+  md_extensions = "+link_attributes", extra_dependencies = NULL, ...)
 }
 \arguments{
 \item{toc}{\code{TRUE} to include a table of contents in the output}
@@ -13,6 +13,10 @@ f1000_article(toc = FALSE, number_sections = FALSE, keep_tex = TRUE,
 \item{number_sections}{\code{TRUE} to number section headings}
 
 \item{keep_tex}{Keep the intermediate tex file used in the conversion to PDF}
+
+\item{md_extensions}{Markdown extensions to be added or removed from the
+default definition or R Markdown. See the \code{\link{rmarkdown_format}} for
+additional details.}
 
 \item{extra_dependencies}{Add \code{latex_dependency()} dependencies. It can
 can be used to add custom LaTeX packages to the .tex header.}

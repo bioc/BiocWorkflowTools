@@ -161,7 +161,7 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
     last_endhead <- max(which(str_detect(pattern = "^.*\\\\endhead$", string = lines)))
     
     ## insert header line with latex tag, and remove all other parts of table header
-    lines[first_toprule] <- paste0("\\begin{tabledata}", justEntries)
+    lines[first_toprule] <- paste0("\\centering\n\\begin{tabledata}", justEntries)
     lines[first_toprule+1] <- paste("\\header", lines[first_toprule+1])
     lines <- lines[-((first_toprule+2):(last_endhead))]
     
@@ -176,6 +176,11 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
     ## substitute longtable for regular table
     lines <- gsub(pattern = "^.*(\\\\begin\\{|\\\\end\\{)long(table\\}).*$", 
                   replacement = "\\1\\2", 
+                  x = lines)
+    
+    ## add placement specifier 
+    lines <- gsub(pattern = "^(\\\\begin\\{table\\})$", 
+                  replacement = "\\1[htbp]", 
                   x = lines)
     
     ## fix the new lines

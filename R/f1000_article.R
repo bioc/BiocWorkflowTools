@@ -23,6 +23,7 @@
 f1000_article <- function(toc = FALSE,
                           number_sections = FALSE,
                           keep_tex = TRUE,
+                          md_extensions = "+link_attributes",
                           extra_dependencies = NULL,
                           ...) {
   

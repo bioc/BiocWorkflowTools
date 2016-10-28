@@ -125,7 +125,7 @@ Figure legends should briefly describe the key messages of the figure such that 
 
 For any figures reproduced from another publication (as long as appropriate permission has been obtained from the copyright holder —see under the heading 'Submission'), please include a line in the legend to state that: 'This figure has been reproduced with kind permission from [include original publication citation]'.
 
-![Your figure legend goes here; it should be succinct, while still explaining all symbols and abbreviations.](frog.jpg)
+![Your figure legend goes here; it should be succinct, while still explaining all symbols and abbreviations.](frog.jpg){width=40%}
 
 
 ## Lists

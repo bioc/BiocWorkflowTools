@@ -25,11 +25,11 @@ $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
 
-$if(tables)$
-\usepackage{longtable}
-\usepackage[table]{xcolor}
+$if(numbersections)$
+$else$
+% disable section numbers
+\setcounter{secnumdepth}{0}
 $endif$
-
 
 % required for pandocs conversion of numbered lists
 \providecommand{\tightlist}{%
