@@ -1,10 +1,6 @@
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$paper,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
 
 \usepackage{f1000_styles}
-\usepackage{color}
-\usepackage{fancyvrb}
-\usepackage{alltt}
-\usepackage{graphicx}
 
 \usepackage$if(citationoptions)$[$citationoptions$]$endif${natbib}
 $if(letcitecitep)$\let\cite\citep$endif$
@@ -24,6 +20,9 @@ $if(letcitecitep)$\let\cite\citep$endif$
 $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
+
+% disable code chunks background
+\renewenvironment{Shaded}{}{}
 
 $if(numbersections)$
 $else$
