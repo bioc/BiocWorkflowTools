@@ -50,15 +50,19 @@ f1000_article <- function(toc = FALSE,
         documentclass = "extarticle",
         fontsize = "9pt",
         papersize = "a4",
-        citationoptions = "numbers"
+        citationoptions = "numbers",
+        letcitecitep = if (isTRUE(grepl("round", metadata$citationoptions, fixed=TRUE))) "yes" else "no"
       )
       
       ## set to default if not specified in document header
       vars <- defaults[!names(defaults) %in% names(metadata)]
       
+      ## remove disabled boolean options
+      vars <- vars[!tolower(vars) %in% c("no", "false")]
+      
       ## format as pandoc command-line args
       if (length(vars) > 0L) {
-        vars <- paste(names(vars), vars, sep=":")
+        vars <- paste(names(vars), vars, sep="=")
         vars <- c(rbind(rep("--variable", length(vars)), vars))
         args <- c(args, vars)
       }

@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 
 \usepackage$if(citationoptions)$[$citationoptions$]$endif${natbib}
+$if(letcitecitep)$\let\cite\citep$endif$
 
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
