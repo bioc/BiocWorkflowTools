@@ -2,6 +2,8 @@
 
 \usepackage{f1000_styles}
 
+\usepackage[pdfborder={0 0 0}]{hyperref}
+
 \usepackage$if(citationoptions)$[$citationoptions$]$endif${natbib}
 $if(letcitecitep)$\let\cite\citep$endif$
 
@@ -30,35 +32,38 @@ $else$
 \setcounter{secnumdepth}{0}
 $endif$
 
-% required for pandocs conversion of numbered lists
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-$if(title)$
-\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
-$endif$
-
-$if(author)$
-%% AUTH AFFIL %%
-$endif$
-
 $for(header-includes)$
 $header-includes$
 $endfor$
 
-\date{$date$}
-
 \begin{document}
 \pagestyle{front}
+
+$if(title)$
+\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+
+$endif$
+$if(author)$
+%% AUTH AFFIL %%
+
+$endif$
 $if(title)$
 \maketitle
 \thispagestyle{front}
+
 $endif$
 $if(abstract)$
 \begin{abstract}
 $abstract$
 \end{abstract}
+
 $endif$
+$if(keywords)$
+\section*{Keywords}
+$for(keywords)$$keywords$$sep$, $endfor$
+
+$endif$
+
 \clearpage
 \pagestyle{main}
 

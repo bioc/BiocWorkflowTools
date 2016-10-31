@@ -94,6 +94,9 @@ f1000_article <- function(toc = FALSE,
       ## convert instances of \longtable to \table
       lines <- .processPandocTables(lines)
       
+      ## remove calls to pandoc's \tightlist macro
+      lines <- lines[!grepl("^[[:blank:]]*\\\\tightlist$", lines)]
+      
       writeUTF8(lines, output)
       
       output
