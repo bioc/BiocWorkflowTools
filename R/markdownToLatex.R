@@ -68,7 +68,7 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
                    options = c(paste0('--template=', 
                                       system.file('templates/template_F1000SoftwareArticle.tex', 
                                                   package = "BiocWorkflowTools")),
-                               '--no-wrap', ## this is deprecated in more recent versions of pandoc, in future use '--wrap=none'
+                               '--wrap=none', ## this is deprecated in more recent versions of pandoc, in future use '--wrap=none'
                                '--natbib'), 
                    citeproc = FALSE,
                    output = tmp_file2)
