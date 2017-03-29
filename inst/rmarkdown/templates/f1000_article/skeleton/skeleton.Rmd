@@ -7,6 +7,7 @@ author:
     affiliation: Address of author2
 abstract: Abstracts should be up to 300 words and provide a succinct summary of the article. Although the abstract should explain why the article might be interesting, care should be taken not to inappropriately over-emphasise the importance of the work described in the article. Citations should not be used in the abstract, and the use of abbreviations should be minimized.
 keywords: Please list up to eight keywords to help readers interested in your article find it more easily.
+bibliography: sample.bib
 output: BiocWorkflowTools::f1000_article
 ---
 
@@ -83,6 +84,10 @@ Some examples of commonly used markdown syntax are listed below, to help you get
 
 ## Cross-references
 For portability between different output formats, use the syntax introduced by *bookdown*, such as `(\#label)` for labels and `\@ref(label)` for cross-references. The following sections provide examples of referencing tables, figures, and equations.
+
+## Citations
+
+You can include refences in a standard Bibtex file.  The name of this file is given in the header of the markdown document (in our case it is *sample.bib*).  References to entries in the Bibtex file are made using square brackets and use an @ plus the key for the entry you are referencing [@Smith:2012qr].  You can combine multiple entries by separating them with a semi-colon [@Smith:2012qr; @Smith:2013jd].
 
 ## Code chunks
 You can embed an R code chunk like this:

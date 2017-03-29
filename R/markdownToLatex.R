@@ -1,7 +1,13 @@
 #' Convert R markdown to F1000 latex
 #'
 #' Turn Rmarkdown version of workflow document into latex file that can be 
-#' uploaded to F1000 Overleaf
+#' uploaded to F1000 Overleaf.
+#' 
+#' This function has been deprecated.  The recommended way to create the F1000
+#' LaTeX and pdf version is to ensure your Rmarkdown document has the property
+#' 'output: BiocWorkflowTools::f1000_article' in the YAML header, and to use
+#' the function \code{\link[rmarkdown]{render}} in the \code{rmarkdown} pacakge
+#' on the document (or use the 'knit' button in RStudio).
 #' 
 #' @param input path to Rmd file to be converted
 #' @param output Specifies the folder where the output should be written.  If 
@@ -31,6 +37,12 @@
 #' @importFrom stringr str_replace
 #' @export
 markdownToLatex <- function(input, output = NULL, compress = TRUE) {
+    
+    .Deprecated(new = 'render', package = 'rmarkdown',
+                msg = c("markdownToLatex() is deprecated\n", 
+                        "It is suggested that you use the combination of ",
+                "'output: BiocWorkflowTools::f1000_article' in the Rmd header ",
+                "and rmarkdown::render() to generate your document."))
     
     if(!file.exists(input)) {
         stop("Cannot find file provided by the argument: 'input'")

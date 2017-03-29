@@ -18,8 +18,12 @@ f1000_article(toc = FALSE, number_sections = FALSE, keep_tex = TRUE,
 default definition or R Markdown. See the \code{\link{rmarkdown_format}} for
 additional details.}
 
-\item{extra_dependencies}{Add \code{latex_dependency()} dependencies. It can
-can be used to add custom LaTeX packages to the .tex header.}
+\item{extra_dependencies}{A LaTeX dependency \code{latex_dependency()}, a
+list of LaTeX dependencies, a character vector of LaTeX package names (e.g.
+\code{c("framed", "hyperref")}), or a named list of LaTeX package options
+with the names being package names (e.g. \code{list(hypreref =
+c("unicode=true", "breaklinks=true"), lmodern = NULL)}). It can be used to
+add custom LaTeX packages to the .tex header.}
 
 \item{...}{Arguments to \code{rmarkdown::pdf_document}}
 }
@@ -40,4 +44,3 @@ rmarkdown::draft("MyArticle.Rmd", template="f1000_article", package="BiocWorkflo
 }
 
 }
-

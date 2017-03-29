@@ -27,7 +27,14 @@ to the function \code{\link{uploadToOverleaf}}.
 }
 \description{
 Turn Rmarkdown version of workflow document into latex file that can be 
-uploaded to F1000 Overleaf
+uploaded to F1000 Overleaf.
+}
+\details{
+This function has been deprecated.  The recommended way to create the F1000
+LaTeX and pdf version is to ensure your Rmarkdown document has the property
+'output: BiocWorkflowTools::f1000_article' in the YAML header, and to use
+the function \code{\link[rmarkdown]{render}} in the \code{rmarkdown} pacakge
+on the document (or use the 'knit' button in RStudio).
 }
 \examples{
 example_Rmd <- system.file('examples/f1000_software_example.Rmd', 
@@ -37,4 +44,3 @@ markdownToLatex(input = example_Rmd, output = output_dir,
                 compress = TRUE)
 
 }
-
