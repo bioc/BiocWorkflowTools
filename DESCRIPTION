@@ -1,6 +1,6 @@
 Package: BiocWorkflowTools
 Title: Tools to aid the development of Bioconductor Workflow packages
-Version: 1.1.9
+Version: 1.1.10
 Encoding: UTF-8
 Authors@R: c(
   person("Mike", "Smith", email = "grimbough@gmail.com", role = c("aut","cre")),
@@ -15,3 +15,8 @@ NeedsCompilation: no
 VignetteBuilder: knitr
 biocViews: Software, ReportWriting
 RoxygenNote: 6.0.1
+Collate: 
+    'f1000_article.R'
+    'uploadToOverleaf.R'
+    'markdownToLatex.R'
+    'utils.R'

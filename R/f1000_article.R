@@ -17,7 +17,7 @@
 #' }
 #'
 #' @importFrom bookdown pdf_book
-#' @importFrom rmarkdown includes_to_pandoc_args
+#' @importFrom rmarkdown includes_to_pandoc_args includes
 #' 
 #' @export
 f1000_article <- function(toc = FALSE,

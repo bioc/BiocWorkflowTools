@@ -37,10 +37,12 @@ the function \code{\link[rmarkdown]{render}} in the \code{rmarkdown} pacakge
 on the document (or use the 'knit' button in RStudio).
 }
 \examples{
+
 example_Rmd <- system.file('examples/f1000_software_example.Rmd', 
                            package = "BiocWorkflowTools")
 output_dir <- file.path(tempdir(), 'example')
 markdownToLatex(input = example_Rmd, output = output_dir, 
                 compress = TRUE)
+
 
 }

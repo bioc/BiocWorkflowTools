@@ -50,7 +50,7 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
     } else { ## here we have a zip already
         zip_contents <- unzip(files[1], list = TRUE)[,'Name']
         if(!forceNewProject)
-            .checkOverleafProjectCode(zip_contents)
+            .checkForOverleafProject(zip_contents)
     }
 
     ## this is an irritating two step process. First we upload the zip file
@@ -82,12 +82,12 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
     }
 }
 
+#' @noRd
 .writeOverleafProjectCode <- function(folder, overleaf_url) {
-    
     writeLines(text = overleaf_url, con = file.path(folder, 'overleaf_project_url.txt'))
-    
 }
 
+#' @noRd
 .checkForOverleafProject <- function(folder) {
     
     exists <- any(grepl(x = list.files(folder), pattern = 'overleaf_project_url.txt'))

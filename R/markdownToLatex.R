@@ -25,16 +25,19 @@
 #' to the function \code{\link{uploadToOverleaf}}.
 #' 
 #' @examples 
+#' 
 #' example_Rmd <- system.file('examples/f1000_software_example.Rmd', 
 #'                            package = "BiocWorkflowTools")
 #' output_dir <- file.path(tempdir(), 'example')
 #' markdownToLatex(input = example_Rmd, output = output_dir, 
 #'                 compress = TRUE)
 #' 
+#' 
 #' @importFrom rmarkdown pandoc_convert
 #' @importFrom knitr knit render_latex
 #' @importFrom tools file_path_sans_ext file_path_as_absolute
 #' @importFrom stringr str_replace
+#' @include uploadToOverleaf.R
 #' @export
 markdownToLatex <- function(input, output = NULL, compress = TRUE) {
     
@@ -80,7 +83,9 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
                    options = c(paste0('--template=', 
                                       system.file('templates/template_F1000SoftwareArticle.tex', 
                                                   package = "BiocWorkflowTools")),
-                               '--wrap=none', ## this is deprecated in more recent versions of pandoc, in future use '--wrap=none'
+                               '--no-wrap', ## this is deprecated in more recent 
+                               ## versions of pandoc, in future use '--wrap=none'
+                               ## we keep it, since the whole func is deprecated
                                '--natbib'), 
                    citeproc = FALSE,
                    output = tmp_file2)
@@ -99,10 +104,10 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
                   recursive = TRUE)
     }
     ## also copy the f1000 style file & header
-    file.copy(from = system.file('styles/f1000_styles.sty', 
+    file.copy(from = system.file('rmarkdown/templates/f1000_article/skeleton/f1000_styles.sty', 
                                  package = "BiocWorkflowTools"),
               to = output)
-    file.copy(from = system.file('styles/F1000header.png', 
+    file.copy(from = system.file('rmarkdown/templates/f1000_article/skeleton/F1000header.png', 
                                  package = "BiocWorkflowTools"),
               to = output)
     
@@ -128,6 +133,7 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
 #' and the original lines removed.
 #' 
 #' @importFrom stringr str_detect
+#' @noRd
 .processPandocTables <- function(lines) {
   
     ## find lines marking start and end of \longtable chunks and create a list of duples
@@ -159,6 +165,7 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
 #' as a single string seperated by new line characters
 #' 
 #' @importFrom stringr str_detect str_replace
+#' @noRd
 .individualTable <- function(lines) {
     
     ## find the column justifications
@@ -211,6 +218,7 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
 #' and copy them to the same directory we're putting the final document.
 #' 
 #' @importFrom rmarkdown find_external_resources
+#' @noRd
 .copyExternalResources <- function( rmd, dest = NULL ) {
     files <- find_external_resources( rmd )[,'path']
     if(length(files)) {
