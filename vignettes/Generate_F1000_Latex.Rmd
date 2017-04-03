@@ -57,11 +57,15 @@ rmarkdown::draft(file = "MyArticle.Rmd",
                  edit = FALSE)
 ```
 
-# Converting to LaTeX
+# Converting to LaTeX and PDF
 
-While you are writing your Rmarkdown document (and indeed once it is complete), you probably want to view the journal formatted PDF version or obtain a LaTeX source for submission to the journal.
+While you are writing your Rmarkdown document (and indeed once it is complete), you will probably want to view the journal formatted PDF version or obtain a LaTeX source for submission to the journal.
 
-If you're working in RStudio you can simply press the 'Knit' button at the top of the document pane.  This will execute the code chunks, convert the document to LaTeX and then compile this into a PDF.  You will be able to find both the **.tex** and **.pdf** files in the same folder as the original **.Rmd**.
+If you're working in RStudio you can simply press the 'Knit' button at the top of the document pane.  This will execute the code chunks, convert the document to LaTeX and then compile this into a PDF.  All of these files are retained, and you will be able to find both the **.tex** and **.pdf** files in the same folder as the original **.Rmd**.
+
+```{r newFiles, echo = FALSE, out.width='90%', fig.align='center', fig.cap="The complete set of files.  After 'knitting' both the LaTeX source file and PDF documents can be found alongside your Rmarkdown file."}
+knitr::include_graphics("new_files.png")
+```
 
 Working outside RStudio, you can achieve the same result by using the command `render()` from the `rmarkdown` package e.g.
 
