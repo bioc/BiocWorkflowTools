@@ -36,6 +36,10 @@ f1000_article <- function(toc = FALSE,
     template <- system.file("rmarkdown", "templates", "f1000_article", "resources", "template.tex",
                             package = "BiocWorkflowTools")
     
+    template_files <- system.file(package = "BiocWorkflowTools", 
+                                  'rmarkdown', 'templates', 'f1000_article', 'skeleton',
+                                  c('f1000_styles.sty', 'F1000header.png'))
+    
     config <- rmarkdown::pdf_document(toc = toc,
                                       number_sections = number_sections,
                                       keep_tex = keep_tex,
@@ -43,6 +47,22 @@ f1000_article <- function(toc = FALSE,
                                       extra_dependencies = extra_dependencies,
                                       ...)
     
+    intermediates <- config$intermediates_generator
+    
+    # run when document is rendered to a different directory than the input file
+    config$intermediates_generator <- function(original_input, encoding, intermediates_dir) {
+      ## run the default intermediates generator
+      intermediates <- if (is.function(intermediates)) intermediates(original_input, encoding, intermediates_dir)
+
+      ## copy f1000 style file & header
+      file.copy(template_files, normalizePath(intermediates_dir))
+
+      ## append style template files
+      intermediates <- c(intermediates, basename(template_files))
+      
+      intermediates
+    }
+
     ## preprocessor to set pandoc variables
     config$pre_processor <- function(metadata, input_file, runtime, knit_meta, files_dir, output_dir) {
       args <- c()
@@ -100,6 +120,14 @@ f1000_article <- function(toc = FALSE,
       writeUTF8(lines, output)
       
       output
+    }
+    
+    
+    # use `pre_knit` to copy f1000 template files as this seems to be the only 
+    # function which is aware of the original input file name passed to `render` 
+    config$pre_knit <- function(input, ...) {
+      # copy f1000 style file & header
+      file.copy(template_files, dirname(normalizePath(input)))
     }
     
     config
