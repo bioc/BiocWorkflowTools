@@ -9,10 +9,10 @@
 #' @param openInBrowser Boolean determining whether to open a browser at the 
 #' created Overleaf project or not. Default value is FALSE.
 #'
-#' @return No value is returned.  The URL where the uploaded project can be 
-#' accessed is printed to the screen.  If the argument \code{openInBrowser} is 
-#' set to \code{TRUE}, then the default browser will automatically open at the 
-#' Overleaf project page.
+#' @return The URL where the uploaded project can be accessed is printed to the 
+#'   screen and invisibly returned from the function. If the argument
+#'   \code{openInBrowser} is set to \code{TRUE}, then the Overleaf project page
+#'   will automatically open in the default browser.
 #' 
 #' @examples 
 #' example_Rmd <- system.file('examples/f1000_software_example.Rmd', 
@@ -33,66 +33,81 @@
 #' 
 #' @export
 uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowser = FALSE) {
+    if ( is.null(files) )
+        stop("No directory or zip file specified")
+        
+    ## allow only a single directory or zip archive
+    if ( length(files)!=1L ) 
+      stop("Please provide path to a single file or directory")
+  
+    files = normalizePath(files)
     
-    if(is.null(files)) {
-        stop("No file(s) specified")
-    }    
-        
-    is_zip <- file_ext(files[1]) == "zip"
-    if(!is_zip) {
-        
-        if(!forceNewProject)
-            .checkForOverleafProject(files)
+    ## check whether the resource actually exists
+    if ( !isTRUE(file.exists(files)) )
+      stop("Please provide path to an existing file or directory")
+    
+    ## check whether the project has been already uploaded before 
+    if (!forceNewProject)
+      .checkForOverleafProject(files)
+    
+    is_zip <- file_ext(files)=="zip"
+    
+    zip_file <- if (is_zip) files else {
         ## zip the files up, even if there's only one
         tf <- tempfile(fileext = ".zip")
         zip(zipfile = tf, files = files)
-        #files[1] <- tf
-    } else { ## here we have a zip already
-        zip_contents <- unzip(files[1], list = TRUE)[,'Name']
-        if(!forceNewProject)
-            .checkForOverleafProject(zip_contents)
-    }
-
+        tf
+    } 
+    
     ## this is an irritating two step process. First we upload the zip file
     ## to a free file host. then we pass the URL for this to the overleaf API.
     ## Maybe we can improve this in the future?
     uploaded <- POST(url = 'https://transfer.sh/',
-                     body = list(zip_file = upload_file(tf)))
+                     body = list(zip_file = upload_file(zip_file)))
     ## strip new line
     zip_url <- str_replace_all(
         httr::content(uploaded, encoding = "UTF-8", as = "parsed"),
         "[\r\n]" , "")
     ## post to overleaf
-    tmp <- POST(url = 'https://www.overleaf.com/docs',
-                body = list(zip_uri = zip_url))
-    overleaf_url <- head(tmp)$url
+    overleaf_url <- POST(url = 'https://www.overleaf.com/docs',
+                         body = list(zip_uri = zip_url))$url
     
     message("Overleaf project created at:\n\t", overleaf_url)
     
-    if(is_zip) {
-        tf <- file.path(tempdir(), 'overleaf_project_url.txt')
-        writeLines(text = overleaf_url, con = tf)
-        zip(zipfile = files[1], files = tf)
-    } else {
-        writeLines(text = overleaf_url, con = file.path(files[1], 'overleaf_project_url.txt'))
-    }
+    overleaf_url_file <- file.path( ifelse(is_zip, tempdir(), files), overleaf_file)
     
-    if(openInBrowser){
+    writeLines(text = overleaf_url, con = overleaf_url_file)
+    
+    ## add overleaf_project_url.txt to archive
+    if (is_zip)
+        zip(zipfile = zip_file, files = overleaf_url_file, flags = "-qj9X")
+    
+    if (openInBrowser)
         browseURL(url = overleaf_url)
-    }
-}
-
-#' @noRd
-.writeOverleafProjectCode <- function(folder, overleaf_url) {
-    writeLines(text = overleaf_url, con = file.path(folder, 'overleaf_project_url.txt'))
-}
-
-#' @noRd
-.checkForOverleafProject <- function(folder) {
     
-    exists <- any(grepl(x = list.files(folder), pattern = 'overleaf_project_url.txt'))
+    invisible(overleaf_url)
+}
+
+#' @noRd
+overleaf_file <- "overleaf_project_url.txt"
+
+#' @noRd
+.checkForOverleafProject <- function(path) {
+    exists <-
+    if ( file_ext(path)=="zip" ) {
+        if ( overleaf_file %in% unzip(path, list=TRUE)$Name ) {
+            path = unzip(path, files=overleaf_file, junkpaths=TRUE, exdir=tempdir())
+            TRUE
+        }
+        else FALSE
+    }
+    else {
+      path = file.path(path, overleaf_file)
+      file.exists(path)
+    }
+    
     if(exists) {
-        overleaf_url <- readLines(file.path(folder, "overleaf_project_url.txt"))
+        overleaf_url <- readLines(path)[1L]
         stop('You have already uploaded this directory to an Overleaf project.\n',
              'The project can be found at:\n', overleaf_url, call. = FALSE  )    
     }

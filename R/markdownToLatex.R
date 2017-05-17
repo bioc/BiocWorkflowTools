@@ -112,11 +112,12 @@ markdownToLatex <- function(input, output = NULL, compress = TRUE) {
               to = output)
     
     if(compress) {
+        setwd(output)
         zipFile <- paste0(str_replace(string = output, 
                                       pattern = "/$", 
                                       replacement = ""),
                           ".zip")
-        zip(zipfile = zipFile, files = output)
+        zip(zipfile = zipFile, files = ".", flags = "-qr9X")
     }
     
     message("Output file has been written to:\n\t", output)
