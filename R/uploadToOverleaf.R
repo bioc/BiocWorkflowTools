@@ -8,6 +8,8 @@
 #' associated project.  Default value is FALSE.
 #' @param openInBrowser Boolean determining whether to open a browser at the 
 #' created Overleaf project or not. Default value is FALSE.
+#' @param git Boolean specifying whether to initialize a local clone of the 
+#' Overleaf project's git repository
 #'
 #' @return The URL where the uploaded project can be accessed is printed to the 
 #'   screen and invisibly returned from the function. If the argument
@@ -26,13 +28,14 @@
 #' uploadToOverleaf(files = zip_file, openInBrowser = TRUE)
 #' }                
 #' 
-#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_replace str_replace_all
 #' @importFrom utils browseURL zip unzip head
 #' @importFrom tools file_ext
 #' @importFrom httr POST upload_file content
+#' @importFrom git2r fetch init remote_add 
 #' 
 #' @export
-uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowser = FALSE) {
+uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowser = FALSE, git = TRUE) {
     if ( is.null(files) )
         stop("No directory or zip file specified")
         
@@ -81,6 +84,18 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
     ## add overleaf_project_url.txt to archive
     if (is_zip)
         zip(zipfile = zip_file, files = overleaf_url_file, flags = "-qj9X")
+    ## initialize git repo
+    else if ( isTRUE(git) ) {
+      repo <- init(files)
+      remote_add(repo, "origin", str_replace(overleaf_url, "//www\\.", "//git\\."))
+      fetch(repo, "origin")
+      ## the following call should eventually use `git2r::reset` once it's
+      ## clear how to do this https://github.com/ropensci/git2r/issues/281
+      system(sprintf("cd %s; git reset origin/master", files))
+      ## ignore the overleaf project url token file
+      writeLines(text = c(".gitignore", overleaf_file),
+                 con = file.path( files, ".gitignore"))
+    }
     
     if (openInBrowser)
         browseURL(url = overleaf_url)

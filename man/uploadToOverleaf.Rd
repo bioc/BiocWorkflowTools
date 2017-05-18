@@ -5,7 +5,7 @@
 \title{Upload a LaTeX project to Overleaf}
 \usage{
 uploadToOverleaf(files = NULL, forceNewProject = FALSE,
-  openInBrowser = FALSE)
+  openInBrowser = FALSE, git = TRUE)
 }
 \arguments{
 \item{files}{Character vector of file names to upload.  If the first entry
@@ -18,12 +18,15 @@ associated project.  Default value is FALSE.}
 
 \item{openInBrowser}{Boolean determining whether to open a browser at the 
 created Overleaf project or not. Default value is FALSE.}
+
+\item{git}{Boolean specifying whether to initialize a local clone of the 
+Overleaf project's git repository}
 }
 \value{
-No value is returned.  The URL where the uploaded project can be 
-accessed is printed to the screen.  If the argument \code{openInBrowser} is 
-set to \code{TRUE}, then the default browser will automatically open at the 
-Overleaf project page.
+The URL where the uploaded project can be accessed is printed to the 
+  screen and invisibly returned from the function. If the argument
+  \code{openInBrowser} is set to \code{TRUE}, then the Overleaf project page
+  will automatically open in the default browser.
 }
 \description{
 Upload a LaTeX project to Overleaf
