@@ -5,7 +5,7 @@
 \title{Upload a LaTeX project to Overleaf}
 \usage{
 uploadToOverleaf(files = NULL, forceNewProject = FALSE,
-  openInBrowser = FALSE, git = TRUE)
+  openInBrowser = FALSE, git = FALSE)
 }
 \arguments{
 \item{files}{Character vector of file names to upload.  If the first entry

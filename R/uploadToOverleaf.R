@@ -32,10 +32,10 @@
 #' @importFrom utils browseURL zip unzip head
 #' @importFrom tools file_ext
 #' @importFrom httr POST upload_file content
-#' @importFrom git2r fetch init remote_add 
+#' @importFrom git2r clone reset 
 #' 
 #' @export
-uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowser = FALSE, git = TRUE) {
+uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowser = FALSE, git = FALSE) {
     if ( is.null(files) )
         stop("No directory or zip file specified")
         
@@ -86,13 +86,18 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
         zip(zipfile = zip_file, files = overleaf_url_file, flags = "-qj9X")
     ## initialize git repo
     else if ( isTRUE(git) ) {
-      repo <- init(files)
-      remote_add(repo, "origin", str_replace(overleaf_url, "//www\\.", "//git\\."))
-      fetch(repo, "origin")
-      ## the following call should eventually use `git2r::reset` once it's
-      ## clear how to do this https://github.com/ropensci/git2r/issues/281
-      system(sprintf("cd %s; git reset origin/master", files))
-      ## ignore the overleaf project url token file
+      temp_dir <- tempfile("")
+      repo_url <- str_replace(overleaf_url, "//www\\.", "//git\\.")
+      
+      ## FIXME (AO)
+      ## you need the updated version from https://github.com/aoles/git2r
+      ## in order to run the following code
+      repo <- clone(repo_url, temp_dir, checkout=FALSE, progress=FALSE)
+      file.copy(file.path(temp_dir, ".git"), files, recursive = TRUE)
+      repo@path <- files
+      reset(repo, "*")
+      
+      ## ignore the Overleaf project URL token file
       writeLines(text = c(".gitignore", overleaf_file),
                  con = file.path( files, ".gitignore"))
     }
