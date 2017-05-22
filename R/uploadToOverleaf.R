@@ -32,7 +32,7 @@
 #' @importFrom utils browseURL zip unzip head
 #' @importFrom tools file_ext file_path_sans_ext list_files_with_exts
 #' @importFrom httr POST upload_file content
-#' @importFrom git2r clone reset 
+#' @importFrom git2r clone discover_repository reset 
 #' 
 #' @export
 uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowser = FALSE, git = FALSE) {
@@ -59,8 +59,6 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
         ## exclude any system directories or files, such as .git
         files_all = list.files(files, all.files=TRUE, full.names=TRUE, no..=TRUE)
         files_lst = list.files(files, full.names=TRUE)
-        ## allow .gitignore
-        files_lst = c(files_lst, list.files(files, pattern="^\\.gitignore$", all.files=TRUE, full.names=TRUE))
         files_exclude = files_all[ !(files_all %in% files_lst) ]
         
         ## exclude pdf files matching tex sources
@@ -68,9 +66,15 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
         files_pdf = list_files_with_exts(files, "pdf")
         files_exclude = c(files_exclude, files_pdf[ file_path_sans_ext(files_pdf) %in% file_path_sans_ext(files_tex) ])
         
+        ## exclude Overleaf project token file
+        files_exclude = c(files_exclude, list.files(files, pattern=sprintf("^%s$", overleaf_file), full.names=TRUE))
+        
+        ## filter for directories
+        extras <- paste0(files_exclude, ifelse(file.info(files_exclude)$isdir, "/\\*", ""))
+        extras <- sprintf("-x %s", paste(extras, collapse=" "))
+        
         ## zip the files up, even if there's only one
         tf <- tempfile(fileext = ".zip")
-        extras <- sprintf("-x %s", paste(files_exclude, collapse=" "))
         zip(zipfile = tf, files = files, flags = "-qr9X", extras = extras)
         tf
     } 
@@ -114,12 +118,9 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
         if ( file.copy(file.path(temp_dir, ".git"), files, recursive=TRUE) ) {
           repo@path <- files
           reset(repo, "")
-          ## use .gitignore to disable tracking of the following files
-          ## - self
-          ## - Overleaf project URL token file
-          ## - pdf files matching tex sources
-          writeLines(text = c(".gitignore", overleaf_file, files_exclude),
-                     con = file.path( files, ".gitignore"))
+          ## use .gitignore to disable tracking of files which were not uploaded
+          git_ignore <- union(c(".gitignore", overleaf_file), basename(files_exclude))
+          writeLines(text = git_ignore, con = file.path( files, ".gitignore"))
         }
         else
           warning("Failed to initialize git repository")
