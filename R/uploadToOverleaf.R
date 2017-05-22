@@ -30,7 +30,7 @@
 #' 
 #' @importFrom stringr str_replace str_replace_all
 #' @importFrom utils browseURL zip unzip head
-#' @importFrom tools file_ext
+#' @importFrom tools file_ext file_path_sans_ext list_files_with_exts
 #' @importFrom httr POST upload_file content
 #' @importFrom git2r clone reset 
 #' 
@@ -56,9 +56,22 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
     is_zip <- file_ext(files)=="zip"
     
     zip_file <- if (is_zip) files else {
+        ## exclude any system directories or files, such as .git
+        files_all = list.files(files, all.files=TRUE, full.names=TRUE, no..=TRUE)
+        files_lst = list.files(files, full.names=TRUE)
+        ## allow .gitignore
+        files_lst = c(files_lst, list.files(files, pattern="^\\.gitignore$", all.files=TRUE, full.names=TRUE))
+        files_exclude = files_all[ !(files_all %in% files_lst) ]
+        
+        ## exclude pdf files matching tex sources
+        files_tex = list_files_with_exts(files, "tex")
+        files_pdf = list_files_with_exts(files, "pdf")
+        files_exclude = c(files_exclude, files_pdf[ file_path_sans_ext(files_pdf) %in% file_path_sans_ext(files_tex) ])
+        
         ## zip the files up, even if there's only one
         tf <- tempfile(fileext = ".zip")
-        zip(zipfile = tf, files = files)
+        extras <- sprintf("-x %s", paste(files_exclude, collapse=" "))
+        zip(zipfile = tf, files = files, flags = "-qr9X", extras = extras)
         tf
     } 
     
@@ -86,20 +99,33 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
         zip(zipfile = zip_file, files = overleaf_url_file, flags = "-qj9X")
     ## initialize git repo
     else if ( isTRUE(git) ) {
-      temp_dir <- tempfile("")
-      repo_url <- str_replace(overleaf_url, "//www\\.", "//git\\.")
-      
-      ## FIXME (AO)
-      ## you need the updated version from https://github.com/aoles/git2r
-      ## in order to run the following code
-      repo <- clone(repo_url, temp_dir, checkout=FALSE, progress=FALSE)
-      file.copy(file.path(temp_dir, ".git"), files, recursive = TRUE)
-      repo@path <- files
-      reset(repo, "*")
-      
-      ## ignore the Overleaf project URL token file
-      writeLines(text = c(".gitignore", overleaf_file),
-                 con = file.path( files, ".gitignore"))
+      if ( is.null(discover_repository(files, ceiling=0L)) ) {
+        temp_dir <- tempfile("")
+        repo_url <- str_replace(overleaf_url, "//www\\.", "//git\\.")
+        
+        ## FIXME (AO)
+        ## you need the updated version from https://github.com/aoles/git2r
+        ## in order to run the following code
+        repo <- clone(repo_url, temp_dir, checkout=FALSE, progress=FALSE)
+        
+        ## it is necessary to check for the return value of the call to
+        ## file.copy because otherwise the commands following it seem to execute
+        ## before the files are actually copied
+        if ( file.copy(file.path(temp_dir, ".git"), files, recursive=TRUE) ) {
+          repo@path <- files
+          reset(repo, "")
+          ## use .gitignore to disable tracking of the following files
+          ## - self
+          ## - Overleaf project URL token file
+          ## - pdf files matching tex sources
+          writeLines(text = c(".gitignore", overleaf_file, files_exclude),
+                     con = file.path( files, ".gitignore"))
+        }
+        else
+          warning("Failed to initialize git repository")
+      }
+      else
+        warning("Project directory already under version control, skipping git initialization.")
     }
     
     if (openInBrowser)
