@@ -24,12 +24,15 @@ f1000_article <- function(toc = FALSE,
                           number_sections = FALSE,
                           keep_tex = TRUE,
                           md_extensions = "+link_attributes",
+                          pandoc_args = "--wrap=preserve",
                           extra_dependencies = NULL,
                           ...) {
   
   base_format_postprocessed <- function(toc,
                                         number_sections,
                                         keep_tex,
+                                        md_extensions,
+                                        pandoc_args,
                                         extra_dependencies,
                                         ...) {
     
@@ -42,9 +45,12 @@ f1000_article <- function(toc = FALSE,
     
     config <- rmarkdown::pdf_document(toc = toc,
                                       number_sections = number_sections,
-                                      keep_tex = keep_tex,
                                       template = template,
+                                      keep_tex = keep_tex,
+                                      md_extensions = md_extensions,
+                                      pandoc_args = pandoc_args,
                                       extra_dependencies = extra_dependencies,
+                                      pandoc_args = 
                                       ...)
     
     intermediates <- config$intermediates_generator
@@ -137,6 +143,8 @@ f1000_article <- function(toc = FALSE,
   pdf_book(toc = toc,
            number_sections = number_sections,
            keep_tex = keep_tex,
+           md_extensions = md_extensions,
+           pandoc_args = pandoc_args,
            extra_dependencies = extra_dependencies,
            ...,
            base_format = base_format_postprocessed)

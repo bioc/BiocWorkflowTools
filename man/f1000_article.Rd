@@ -5,7 +5,8 @@
 \title{F1000 article format}
 \usage{
 f1000_article(toc = FALSE, number_sections = FALSE, keep_tex = TRUE,
-  md_extensions = "+link_attributes", extra_dependencies = NULL, ...)
+  md_extensions = "+link_attributes", pandoc_args = "--wrap=preserve",
+  extra_dependencies = NULL, ...)
 }
 \arguments{
 \item{toc}{\code{TRUE} to include a table of contents in the output}
@@ -17,6 +18,8 @@ f1000_article(toc = FALSE, number_sections = FALSE, keep_tex = TRUE,
 \item{md_extensions}{Markdown extensions to be added or removed from the
 default definition or R Markdown. See the \code{\link{rmarkdown_format}} for
 additional details.}
+
+\item{pandoc_args}{Additional command line options to pass to pandoc}
 
 \item{extra_dependencies}{A LaTeX dependency \code{latex_dependency()}, a
 list of LaTeX dependencies, a character vector of LaTeX package names (e.g.
