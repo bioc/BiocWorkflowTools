@@ -1,8 +1,6 @@
 #' Upload a LaTeX project to Overleaf
 #' 
-#' @param files Character vector of file names to upload.  If the first entry
-#' is a zip file this is uploaded directly.  Otherwise the files will be added
-#' to a zip archive and then uploaded.
+#' @param path File path to a directory or a single zip file to be uploaded.
 #' @param forceNewProject Logical specifying if a new Overleaf project should
 #' be create, even if the function detects this document has already has an
 #' associated project.  Default value is FALSE.
@@ -35,39 +33,39 @@
 #' @importFrom git2r clone discover_repository reset 
 #' 
 #' @export
-uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowser = FALSE, git = FALSE) {
-    if ( is.null(files) )
+uploadToOverleaf <- function(path, forceNewProject = FALSE, openInBrowser = FALSE, git = FALSE) {
+    if ( missing(path) )
         stop("No directory or zip file specified")
         
     ## allow only a single directory or zip archive
-    if ( length(files)!=1L ) 
-      stop("Please provide path to a single file or directory")
+    if ( length(path)!=1L ) 
+      stop("Please provide a path to a single directory or zip file")
   
-    files = normalizePath(files)
+    path = normalizePath(path)
     
     ## check whether the resource actually exists
-    if ( !isTRUE(file.exists(files)) )
-      stop("Please provide path to an existing file or directory")
+    if ( !isTRUE(file.exists(path)) )
+      stop("Please provide a path to an existing directory or file")
     
     ## check whether the project has been already uploaded before 
     if (!forceNewProject)
-      .checkForOverleafProject(files)
+      .checkForOverleafProject(path)
     
-    is_zip <- file_ext(files)=="zip"
+    is_zip <- file_ext(path)=="zip"
     
-    zip_file <- if (is_zip) files else {
+    zip_file <- if (is_zip) path else {
         ## exclude any system directories or files, such as .git
-        files_all = list.files(files, all.files=TRUE, full.names=TRUE, no..=TRUE)
-        files_lst = list.files(files, full.names=TRUE)
+        files_all = list.files(path, all.files=TRUE, full.names=TRUE, no..=TRUE)
+        files_lst = list.files(path, full.names=TRUE)
         files_exclude = files_all[ !(files_all %in% files_lst) ]
         
         ## exclude pdf files matching tex sources
-        files_tex = list_files_with_exts(files, "tex")
-        files_pdf = list_files_with_exts(files, "pdf")
+        files_tex = list_files_with_exts(path, "tex")
+        files_pdf = list_files_with_exts(path, "pdf")
         files_exclude = c(files_exclude, files_pdf[ file_path_sans_ext(files_pdf) %in% file_path_sans_ext(files_tex) ])
         
         ## exclude Overleaf project token file
-        files_exclude = c(files_exclude, list.files(files, pattern=sprintf("^%s$", overleaf_file), full.names=TRUE))
+        files_exclude = c(files_exclude, list.files(path, pattern=sprintf("^%s$", overleaf_file), full.names=TRUE))
         
         ## filter for directories
         extras <- paste0(files_exclude, ifelse(file.info(files_exclude)$isdir, "/\\*", ""))
@@ -75,7 +73,7 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
         
         ## zip the files up, even if there's only one
         tf <- tempfile(fileext = ".zip")
-        zip(zipfile = tf, files = files, flags = "-qr9X", extras = extras)
+        zip(zipfile = tf, files = path, flags = "-qr9X", extras = extras)
         tf
     } 
     
@@ -94,7 +92,7 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
     
     message("Overleaf project created at:\n\t", overleaf_url)
     
-    overleaf_url_file <- file.path( ifelse(is_zip, tempdir(), files), overleaf_file)
+    overleaf_url_file <- file.path( ifelse(is_zip, tempdir(), path), overleaf_file)
     
     writeLines(text = overleaf_url, con = overleaf_url_file)
     
@@ -103,24 +101,24 @@ uploadToOverleaf <- function(files = NULL, forceNewProject = FALSE, openInBrowse
         zip(zipfile = zip_file, files = overleaf_url_file, flags = "-qj9X")
     ## initialize git repo
     else if ( isTRUE(git) ) {
-      if ( is.null(discover_repository(files, ceiling=0L)) ) {
+      if ( is.null(discover_repository(path, ceiling=0L)) ) {
         temp_dir <- tempfile("")
         repo_url <- str_replace(overleaf_url, "//www\\.", "//git\\.")
         
         ## FIXME (AO)
-        ## you need the updated version from https://github.com/aoles/git2r
+        ## you need the devel version from https://github.com/ropensci/git2r
         ## in order to run the following code
         repo <- clone(repo_url, temp_dir, checkout=FALSE, progress=FALSE)
         
         ## it is necessary to check for the return value of the call to
         ## file.copy because otherwise the commands following it seem to execute
         ## before the files are actually copied
-        if ( file.copy(file.path(temp_dir, ".git"), files, recursive=TRUE) ) {
-          repo@path <- files
+        if ( file.copy(file.path(temp_dir, ".git"), path, recursive=TRUE) ) {
+          repo@path <- path
           reset(repo, "")
           ## use .gitignore to disable tracking of files which were not uploaded
           git_ignore <- union(c(".gitignore", overleaf_file), basename(files_exclude))
-          writeLines(text = git_ignore, con = file.path( files, ".gitignore"))
+          writeLines(text = git_ignore, con = file.path( path, ".gitignore"))
         }
         else
           warning("Failed to initialize git repository")

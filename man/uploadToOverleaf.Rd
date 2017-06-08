@@ -4,13 +4,11 @@
 \alias{uploadToOverleaf}
 \title{Upload a LaTeX project to Overleaf}
 \usage{
-uploadToOverleaf(files = NULL, forceNewProject = FALSE,
-  openInBrowser = FALSE, git = FALSE)
+uploadToOverleaf(path, forceNewProject = FALSE, openInBrowser = FALSE,
+  git = FALSE)
 }
 \arguments{
-\item{files}{Character vector of file names to upload.  If the first entry
-is a zip file this is uploaded directly.  Otherwise the files will be added
-to a zip archive and then uploaded.}
+\item{path}{File path to a directory or a single zip file to be uploaded.}
 
 \item{forceNewProject}{Logical specifying if a new Overleaf project should
 be create, even if the function detects this document has already has an
