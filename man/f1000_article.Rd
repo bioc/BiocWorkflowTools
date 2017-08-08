@@ -2,11 +2,12 @@
 % Please edit documentation in R/f1000_article.R
 \name{f1000_article}
 \alias{f1000_article}
-\title{F1000 article format}
+\title{F1000Research article format}
 \usage{
 f1000_article(toc = FALSE, number_sections = FALSE, fig_width = 5.67,
   fig_height = fig_width, fig_align = "center", keep_tex = TRUE,
-  md_extensions = "+link_attributes", pandoc_args = "--wrap=preserve", ...)
+  citation_package = "natbib", md_extensions = "+link_attributes",
+  pandoc_args = "--wrap=preserve", ...)
 }
 \arguments{
 \item{toc}{\code{TRUE} to include a table of contents in the output}
@@ -17,9 +18,12 @@ f1000_article(toc = FALSE, number_sections = FALSE, fig_width = 5.67,
 
 \item{fig_height}{Default width (in inches) for figures}
 
-\item{fig_align}{Alignment of figures. Possible values are "center" (default) "left" and "right.}
+\item{fig_align}{Default alignment of figures. Possible values are "center" (default) "left" and "right".}
 
 \item{keep_tex}{Keep the intermediate tex file used in the conversion to PDF}
+
+\item{citation_package}{The LaTeX package to process citations, \code{natbib}
+or \code{biblatex}. Use \code{none} if neither package is to be used.}
 
 \item{md_extensions}{Markdown extensions to be added or removed from the
 default definition or R Markdown. See the \code{\link{rmarkdown_format}} for
@@ -27,21 +31,39 @@ additional details.}
 
 \item{pandoc_args}{Additional command line options to pass to pandoc}
 
-\item{...}{Arguments to \code{rmarkdown::pdf_document}}
+\item{...}{Arguments to \code{\link{pdf_document}}}
 }
 \value{
-R Markdown output format to pass to
-  \code{\link[rmarkdown:render]{render}}
+R Markdown output format to pass to \code{\link{render}}
 }
 \description{
-Format for creating F1000 software articles.
+Format for creating F1000Research software tool articles.
 }
 \details{
-Creates a latex file that can be uploaded to F1000 Overleaf
+Creates LaTeX sources which can be submitted to F1000Research through Overleaf.
 }
+\section{Citations}{
+ 
+
+R Markdown supports automatic generation of citations. You can find more information on
+the markdown citation syntax in the
+\href{http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html}{Bibliographies
+and Citations} article in the R Markdown online documentation.
+
+A bibliography file can be specified using the \code{bibliography} metadata field in the document's YAML header. 
+Metadata variables for customizing citation style include:
+
+\describe{
+   \item{\code{biblio-style}}{Bibliography style (e.g. "unsrtnat", "plainnat")}
+   \item{\code{natbiboptions}}{Options to \code{natbib} LaTeX package (e.g. "number", "super", "round")}
+   \item{\code{biblatexoptions}}{Options to \code{biblatex} LaTeX package}
+}
+}
+
 \examples{
 
 \dontrun{
+
 rmarkdown::draft("MyArticle.Rmd", template="f1000_article", package="BiocWorkflowTools")
 }
 

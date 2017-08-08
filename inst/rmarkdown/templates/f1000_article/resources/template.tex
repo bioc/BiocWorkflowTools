@@ -4,8 +4,18 @@
 
 \usepackage[pdfborder={0 0 0}]{hyperref}
 
-\usepackage$if(citationoptions)$[$citationoptions$]$endif${natbib}
+$if(natbib)$
+\usepackage[$if(natbiboptions)$$natbiboptions$$else$numbers$endif$]{natbib}
+\bibliographystyle{$if(biblio-style)$$biblio-style$$else$unsrtnat$endif$}
 $if(letcitecitep)$\let\cite\citep$endif$
+$endif$
+$if(biblatex)$
+\usepackage$if(biblio-style)$[style=$biblio-style$]$endif${biblatex}
+$if(biblatexoptions)$\ExecuteBibliographyOptions{$for(biblatexoptions)$$biblatexoptions$$sep$,$endfor$}$endif$
+$for(bibliography)$
+\addbibresource{$bibliography$}
+$endfor$
+$endif$
 
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
@@ -101,8 +111,7 @@ $else$
 \renewcommand\refname{$biblio-title$}
 $endif$
 $endif$
-{\small\bibliographystyle{unsrtnat}
-\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}}
+{\small\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}}
 
 $endif$
 $endif$

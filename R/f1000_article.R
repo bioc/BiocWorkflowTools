@@ -1,19 +1,33 @@
-#' F1000 article format
+#' F1000Research article format
 #' 
-#' Format for creating F1000 software articles.
+#' Format for creating F1000Research software tool articles.
 #'
-#' Creates a latex file that can be uploaded to F1000 Overleaf
+#' Creates LaTeX sources which can be submitted to F1000Research through Overleaf.
 #' 
-#' @inheritParams rmarkdown::pdf_document
-#' @param fig_align Default alignment of figures. Possible values are "center" (default) "left" and "right.
-#' @param ... Arguments to \code{rmarkdown::pdf_document}
+#' @inherit rmarkdown::pdf_document params return
+#' @param fig_align Default alignment of figures. Possible values are "center" (default) "left" and "right".
+#' @param ... Arguments to \code{\link{pdf_document}}
+#'
+#' @section Citations: 
 #' 
-#' @return R Markdown output format to pass to
-#'   \code{\link[rmarkdown:render]{render}}
+#' R Markdown supports automatic generation of citations. You can find more information on
+#' the markdown citation syntax in the
+#' \href{http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html}{Bibliographies
+#' and Citations} article in the R Markdown online documentation.
+#' 
+#' A bibliography file can be specified using the \code{bibliography} metadata field in the document's YAML header. 
+#' Metadata variables for customizing citation style include:
+#' 
+#' \describe{
+#'    \item{\code{biblio-style}}{Bibliography style (e.g. "unsrtnat", "plainnat")}
+#'    \item{\code{natbiboptions}}{Options to \code{natbib} LaTeX package (e.g. "number", "super", "round")}
+#'    \item{\code{biblatexoptions}}{Options to \code{biblatex} LaTeX package}
+#' }
 #'
 #' @examples
 #'
 #' \dontrun{
+#' 
 #' rmarkdown::draft("MyArticle.Rmd", template="f1000_article", package="BiocWorkflowTools")
 #' }
 #'
@@ -28,6 +42,7 @@ f1000_article <- function(toc = FALSE,
                           fig_height = fig_width,
                           fig_align = "center",
                           keep_tex = TRUE,
+                          citation_package = "natbib",
                           md_extensions = "+link_attributes",
                           pandoc_args = "--wrap=preserve",
                           ...) {
@@ -45,8 +60,7 @@ f1000_article <- function(toc = FALSE,
       documentclass = "extarticle",
       fontsize = "9pt",
       papersize = "a4",
-      citationoptions = "numbers",
-      letcitecitep = if (isTRUE(grepl("round", metadata$citationoptions, fixed=TRUE))) "yes" else "no"
+      letcitecitep = if (isTRUE(grepl("round", metadata$natbiboptions, fixed=TRUE))) "yes" else "no"
     )
     
     ## set to default if not specified in document header
@@ -134,6 +148,7 @@ f1000_article <- function(toc = FALSE,
                                                  fig_height = fig_height,
                                                  template = "default",
                                                  keep_tex = keep_tex,
+                                                 citation_package = citation_package,
                                                  md_extensions = md_extensions,
                                                  pandoc_args = pandoc_args,
                                                  base_format = rmarkdown::pdf_document,

@@ -87,7 +87,8 @@ For portability between different output formats, use the syntax introduced by *
 
 ## Citations
 
-You can include refences in a standard Bibtex file.  The name of this file is given in the header of the markdown document (in our case it is *sample.bib*).  References to entries in the Bibtex file are made using square brackets and use an @ plus the key for the entry you are referencing [@Smith:2012qr].  You can combine multiple entries by separating them with a semi-colon [@Smith:2012qr; @Smith:2013jd].
+You can include references in a standard Bibtex file.  The name of this file is given in the header of the markdown document (in our case it is *sample.bib*).  References to entries in the Bibtex file are made using square brackets and use an @ plus the key for the entry you are referencing [@Smith:2012qr].  You can combine multiple entries by separating them with a semi-colon [@Smith:2012qr; @Smith:2013jd].
+The default bibliography style uses numerical citations.  For superscript or author-year citations set the header metadata field `natbiboptions` to either `super` or `round`, respectively.
 
 ## Code chunks
 You can embed an R code chunk like this:
