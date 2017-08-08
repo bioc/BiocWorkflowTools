@@ -4,14 +4,20 @@
 \alias{f1000_article}
 \title{F1000 article format}
 \usage{
-f1000_article(toc = FALSE, number_sections = FALSE, keep_tex = TRUE,
-  md_extensions = "+link_attributes", pandoc_args = "--wrap=preserve",
-  extra_dependencies = NULL, ...)
+f1000_article(toc = FALSE, number_sections = FALSE, fig_width = 5.67,
+  fig_height = fig_width, fig_align = "center", keep_tex = TRUE,
+  md_extensions = "+link_attributes", pandoc_args = "--wrap=preserve", ...)
 }
 \arguments{
 \item{toc}{\code{TRUE} to include a table of contents in the output}
 
 \item{number_sections}{\code{TRUE} to number section headings}
+
+\item{fig_width}{Default width (in inches) for figures}
+
+\item{fig_height}{Default width (in inches) for figures}
+
+\item{fig_align}{Alignment of figures. Possible values are "center" (default) "left" and "right.}
 
 \item{keep_tex}{Keep the intermediate tex file used in the conversion to PDF}
 
@@ -20,13 +26,6 @@ default definition or R Markdown. See the \code{\link{rmarkdown_format}} for
 additional details.}
 
 \item{pandoc_args}{Additional command line options to pass to pandoc}
-
-\item{extra_dependencies}{A LaTeX dependency \code{latex_dependency()}, a
-list of LaTeX dependencies, a character vector of LaTeX package names (e.g.
-\code{c("framed", "hyperref")}), or a named list of LaTeX package options
-with the names being package names (e.g. \code{list(hypreref =
-c("unicode=true", "breaklinks=true"), lmodern = NULL)}). It can be used to
-add custom LaTeX packages to the .tex header.}
 
 \item{...}{Arguments to \code{rmarkdown::pdf_document}}
 }
