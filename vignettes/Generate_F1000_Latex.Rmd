@@ -4,7 +4,7 @@ author:
   - name: Mike L. Smith
 date: "`r doc_date()`"
 output: 
-  BiocStyle::html_document2
+  BiocStyle::html_document
 vignette: >
   %\VignetteIndexEntry{Converting Rmarkdown to F1000Research LaTeX Format}
   %\VignetteEngine{knitr::rmarkdown}
