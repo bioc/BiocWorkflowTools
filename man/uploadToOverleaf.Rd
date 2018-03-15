@@ -30,12 +30,14 @@ The URL where the uploaded project can be accessed is printed to the
 Upload a LaTeX project to Overleaf
 }
 \examples{
+
+\dontrun{
 example_Rmd <- system.file('examples/f1000_software_example.Rmd', 
                            package = "BiocWorkflowTools")
 output_dir <- file.path(tempdir(), 'example')
 markdownToLatex(input = example_Rmd, output = output_dir, 
                 compress = TRUE)
-\dontrun{
+
 ## don't run this code chunk in the example as we don't want to spam Overleaf
 zip_file <- paste0(output_dir, '.zip')
 uploadToOverleaf(files = zip_file, openInBrowser = TRUE)
