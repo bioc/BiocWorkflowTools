@@ -87,7 +87,7 @@ workflow_dir <- file.path(tmp_dir, 'MyArticle')
 uploadToOverleaf(files = workflow_dir)
 ```
 
-**From here you should find both the \LaTeX\ and R Markdown versions of the article are present in the Overleaf project, with the first of these being rendered into the document preview one sees on the site.  In the Overleaf environment, only changes to the \LaTeX\ version will be reflected in the preview pane, rather than the R Markdown you have been working with now.  It is entirely possible to edit the R Markdown here too, but within the Overleaf enviroment there is no way to regenerate the \LaTeX\ version, and thus also the PDF.  For these reasons we don't recommend using Overleaf as an editor in this scenario, and rather only as the submission conduit.**
+*From here you should find both the \LaTeX\ and R Markdown versions of the article are present in the Overleaf project, with the first of these being rendered into the document preview one sees on the site.  In the Overleaf environment, only changes to the \LaTeX\ version will be reflected in the preview pane, rather than the R Markdown you have been working with now.  It is entirely possible to edit the R Markdown here too, but within the Overleaf enviroment there is no way to regenerate the \LaTeX\ version, and thus also the PDF.  For these reasons we don't recommend using Overleaf as an editor in this scenario, and rather only as the submission conduit.*
 
 # R session information
 
@@ -97,7 +97,10 @@ sessionInfo()
 
 # Acknowledgements and funding
 
-Funding for continued development and maintenance of this package is currently provided by the German Network for Bioinformatics Infrastructure
+Funding for continued development and maintenance of this package is currently provided by the German Network for Bioinformatics Infrastructure (de.NBI).
 
-<a href="http://www.denbi.de"><img src="https://tess.elixir-europe.org/system/content_providers/images/000/000/063/original/deNBI_Logo_rgb.jpg" width="400" align="left"></a>
+```{r, include_logo, out.width="50%", echo=FALSE}
+knitr::include_graphics("denbi_logo.jpg")
+```
+
 
