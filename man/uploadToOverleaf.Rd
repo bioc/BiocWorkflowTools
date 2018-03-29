@@ -4,43 +4,22 @@
 \alias{uploadToOverleaf}
 \title{Upload a LaTeX project to Overleaf}
 \usage{
-uploadToOverleaf(path, forceNewProject = FALSE, openInBrowser = FALSE,
-  git = FALSE)
+uploadToOverleaf(path)
 }
 \arguments{
 \item{path}{File path to a directory or a single zip file to be uploaded.}
-
-\item{forceNewProject}{Logical specifying if a new Overleaf project should
-be create, even if the function detects this document has already has an
-associated project.  Default value is FALSE.}
-
-\item{openInBrowser}{Boolean determining whether to open a browser at the 
-created Overleaf project or not. Default value is FALSE.}
-
-\item{git}{Boolean specifying whether to initialize a local clone of the 
-Overleaf project's git repository}
 }
 \value{
-The URL where the uploaded project can be accessed is printed to the 
-  screen and invisibly returned from the function. If the argument
-  \code{openInBrowser} is set to \code{TRUE}, then the Overleaf project page
+Does not return any value.  The Overleaf project page
   will automatically open in the default browser.
 }
 \description{
 Upload a LaTeX project to Overleaf
 }
 \examples{
-
 \dontrun{
-example_Rmd <- system.file('examples/f1000_software_example.Rmd', 
-                           package = "BiocWorkflowTools")
-output_dir <- file.path(tempdir(), 'example')
-markdownToLatex(input = example_Rmd, output = output_dir, 
-                compress = TRUE)
-
 ## don't run this code chunk in the example as we don't want to spam Overleaf
-zip_file <- paste0(output_dir, '.zip')
-uploadToOverleaf(files = zip_file, openInBrowser = TRUE)
+uploadToOverleaf(files = 'MyWorkflow', openInBrowser = TRUE)
 }                
 
 }

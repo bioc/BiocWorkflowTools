@@ -1,29 +1,14 @@
 #' Upload a LaTeX project to Overleaf
 #' 
 #' @param path File path to a directory or a single zip file to be uploaded.
-#' @param forceNewProject Logical specifying if a new Overleaf project should
-#' be create, even if the function detects this document has already has an
-#' associated project.  Default value is FALSE.
-#' @param openInBrowser Boolean determining whether to open a browser at the 
-#' created Overleaf project or not. Default value is FALSE.
-#' @param git Boolean specifying whether to initialize a local clone of the 
-#' Overleaf project's git repository
 #'
-#' @return The URL where the uploaded project can be accessed is printed to the 
-#'   screen and invisibly returned from the function. If the argument
-#'   \code{openInBrowser} is set to \code{TRUE}, then the Overleaf project page
+#' @return Does not return any value.  The Overleaf project page
 #'   will automatically open in the default browser.
 #' 
 #' @examples 
-#' example_Rmd <- system.file('examples/f1000_software_example.Rmd', 
-#'                            package = "BiocWorkflowTools")
-#' output_dir <- file.path(tempdir(), 'example')
-#' markdownToLatex(input = example_Rmd, output = output_dir, 
-#'                 compress = TRUE)
 #' \dontrun{
 #' ## don't run this code chunk in the example as we don't want to spam Overleaf
-#' zip_file <- paste0(output_dir, '.zip')
-#' uploadToOverleaf(files = zip_file, openInBrowser = TRUE)
+#' uploadToOverleaf(files = 'MyWorkflow', openInBrowser = TRUE)
 #' }                
 #' 
 #' @importFrom stringr str_replace str_replace_all
@@ -33,7 +18,7 @@
 #' @importFrom git2r clone discover_repository reset 
 #' 
 #' @export
-uploadToOverleaf <- function(path, forceNewProject = FALSE, openInBrowser = FALSE, git = FALSE) {
+uploadToOverleaf <- function(path) {
     if ( missing(path) )
         stop("No directory or zip file specified")
         
@@ -48,8 +33,8 @@ uploadToOverleaf <- function(path, forceNewProject = FALSE, openInBrowser = FALS
       stop("Please provide a path to an existing directory or file")
     
     ## check whether the project has been already uploaded before 
-    if (!forceNewProject)
-      .checkForOverleafProject(path)
+    ##if (!forceNewProject)
+    ##  .checkForOverleafProject(path)
     
     is_zip <- file_ext(path)=="zip"
     
@@ -87,50 +72,19 @@ uploadToOverleaf <- function(path, forceNewProject = FALSE, openInBrowser = FALS
         httr::content(uploaded, encoding = "UTF-8", as = "parsed"),
         "[\r\n]" , "")
     ## post to overleaf
-    overleaf_url <- POST(url = 'https://www.overleaf.com/docs',
-                         body = list(zip_uri = zip_url))$url
+    ## overleaf_url <- POST(url = 'https://www.overleaf.com/docs',
+    ##                     body = list(zip_uri = zip_url))$url
     
-    message("Overleaf project created at:\n\t", overleaf_url)
+    browseURL(url = paste0('https://www.overleaf.com/docs?snip_uri=', zip_url),
+              encodeIfNeeded = TRUE)
     
-    overleaf_url_file <- file.path( ifelse(is_zip, tempdir(), path), overleaf_file)
+    #message("Overleaf project created at:\n\t", overleaf_url)
     
-    writeLines(text = overleaf_url, con = overleaf_url_file)
+    #overleaf_url_file <- file.path( ifelse(is_zip, tempdir(), path), overleaf_file)
     
-    ## add overleaf_project_url.txt to archive
-    if (is_zip)
-        zip(zipfile = zip_file, files = overleaf_url_file, flags = "-qj9X")
-    ## initialize git repo
-    else if ( isTRUE(git) ) {
-      if ( is.null(discover_repository(path, ceiling=0L)) ) {
-        temp_dir <- tempfile("")
-        repo_url <- str_replace(overleaf_url, "//www\\.", "//git\\.")
-        
-        ## FIXME (AO)
-        ## you need the devel version from https://github.com/ropensci/git2r
-        ## in order to run the following code
-        repo <- clone(repo_url, temp_dir, checkout=FALSE, progress=FALSE)
-        
-        ## it is necessary to check for the return value of the call to
-        ## file.copy because otherwise the commands following it seem to execute
-        ## before the files are actually copied
-        if ( file.copy(file.path(temp_dir, ".git"), path, recursive=TRUE) ) {
-          repo@path <- path
-          reset(repo, "")
-          ## use .gitignore to disable tracking of files which were not uploaded
-          git_ignore <- union(c(".gitignore", overleaf_file), basename(files_exclude))
-          writeLines(text = git_ignore, con = file.path( path, ".gitignore"))
-        }
-        else
-          warning("Failed to initialize git repository")
-      }
-      else
-        warning("Project directory already under version control, skipping git initialization.")
-    }
+    #writeLines(text = overleaf_url, con = overleaf_url_file)
     
-    if (openInBrowser)
-        browseURL(url = overleaf_url)
-    
-    invisible(overleaf_url)
+    invisible(NULL)
 }
 
 #' @noRd
