@@ -76,17 +76,18 @@ rmarkdown::render(input = rmd_file)
 
 # Article upload
 
-Finally, we provide the function `uploadToOverleaf()` to upload the project directly to Overleaf (<http://www.overleaf.com>), the LaTeX authoring system F1000Research use for their submission process.  This step is entirely optional, and the output created by the previous steps can be uploaded manually.
+Finally, we provide the function `uploadToOverleaf()` to upload the project directly to Overleaf (<http://www.overleaf.com>), the LaTeX authoring system F1000Research use for their submission process.  This step is entirely optional, and the output created by the previous steps can be uploaded manually if you wish.
 
-The primary argument here is `files` to which you give the location of the directory containing your **.Rmd**, **.tex**, etc. files you have written.  `uploadToOverleaf()` will compress the containing folder into a zip file, and submit this to Overleaf.  If the upload is successful a URL will be returned, and if you use the argument `openInBrowser = TRUE` an browser window will open at the new project.  From here you can submit your article to the journal.
+The only argument here is `files` to which you give the location of the directory containing your **.Rmd**, **.tex**, etc. files you have written.  `uploadToOverleaf()` will compress the containing folder into a zip file, and submit this to Overleaf, opening a browser window pointing to the newly created project.
 
 <!-- don't run this code chunk as we don't want to spam Overleaf -->
 ```{r upload, eval=FALSE}
 library(BiocWorkflowTools)
 workflow_dir <- file.path(tmp_dir, 'MyArticle')
-uploadToOverleaf(files = workflow_dir, 
-                 openInBrowser = TRUE)
+uploadToOverleaf(files = workflow_dir)
 ```
+
+**From here you should find both the \LaTeX\ and R Markdown versions of the article are present in the Overleaf project, with the first of these being rendered into the document preview one sees on the site.  In the Overleaf environment, only changes to the \LaTeX\ version will be reflected in the preview pane, rather than the R Markdown you have been working with now.  It is entirely possible to edit the R Markdown here too, but within the Overleaf enviroment there is no way to regenerate the \LaTeX\ version, and thus also the PDF.  For these reasons we don't recommend using Overleaf as an editor in this scenario, and rather only as the submission conduit.**
 
 # R session information
 
