@@ -11,6 +11,13 @@ bibliography: sample.bib
 output: BiocWorkflowTools::f1000_article
 ---
 
+**R version**: `r R.version.string`
+
+**Bioconductor version**: `r BiocInstaller::biocVersion()`
+
+<!--  Update the name of the package below to be the name of the workflow package you are working on -->
+**Package**: `r packageVersion("ExampleWorkflow")`
+
 # Introduction
 
 The introduction provides context as to why the software tool was developed and what need it addresses.  It is good scholarly practice to mention previously developed tools that address similar needs, and why the current tool is needed.
