@@ -1,0 +1,21 @@
+language: r
+pandoc_version: 1.18
+sudo: false
+cache: packages
+
+before_install:
+  - tlmgr install bera nowidow parnotes marginfix
+
+r:
+  - devel
+bioc_required: true
+bioc_use_devel: true
+
+r: bioc-devel
+
+warnings_are_errors: false
+
+bioc_packages: BiocCheck
+
+
+
