@@ -1,0 +1,14 @@
+citEntry(entry="article",
+         title = "Authoring Bioconductor workflows with BiocWorkflowTools [version 1; referees: 1 approved with reservations]",
+         author = personList( as.person("Mike L. Smith"),
+                              as.person("Andrzej K. Oleś"), 
+                              as.person("Wolfgang Huber") ),
+         year = 2018,
+         journal = "F1000Research",
+         doi = "10.12688/f1000research.14399.1",
+         issue = 7,
+         pages = 431,
+         textVersion = 
+         paste("Smith ML, Oleś AK and Huber W", 
+               "Authoring Bioconductor workflows with BiocWorkflowTools [version 1; referees: 1 approved with reservations]",
+                "F1000Research 7:431 (2018)" ) )

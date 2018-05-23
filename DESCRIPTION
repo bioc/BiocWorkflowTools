@@ -1,6 +1,6 @@
 Package: BiocWorkflowTools
 Title: Tools to aid the development of Bioconductor Workflow packages
-Version: 1.5.8
+Version: 1.7.1
 Encoding: UTF-8
 Authors@R: c(
   person("Mike", "Smith", email = "grimbough@gmail.com", role = c("aut","cre")),
