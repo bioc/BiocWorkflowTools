@@ -1,5 +1,5 @@
 citEntry(entry="article",
-         title = "Authoring Bioconductor workflows with BiocWorkflowTools [version 1; referees: 1 approved with reservations]",
+         title = "Authoring Bioconductor workflows with BiocWorkflowTools [version 1; referees: 2 approved with reservations]",
          author = personList( as.person("Mike L. Smith"),
                               as.person("Andrzej K. Oleś"), 
                               as.person("Wolfgang Huber") ),
@@ -10,5 +10,5 @@ citEntry(entry="article",
          pages = 431,
          textVersion = 
          paste("Smith ML, Oleś AK and Huber W", 
-               "Authoring Bioconductor workflows with BiocWorkflowTools [version 1; referees: 1 approved with reservations]",
+               "Authoring Bioconductor workflows with BiocWorkflowTools [version 1; referees: 2 approved with reservations]",
                 "F1000Research 7:431 (2018)" ) )
