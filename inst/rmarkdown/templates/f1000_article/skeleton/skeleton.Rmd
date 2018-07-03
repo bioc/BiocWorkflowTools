@@ -135,7 +135,7 @@ Alternatively, you can use the standard markdown syntax like so:
 
 Please give figures appropriate filenames, e.g.: figure1.pdf, figure2.png.
 
-Figure legends should briefly describe the key messages of the figure such that the figure can stand alone from the main text. However, all figures should also be discussed in the article text. Each legend should have a concise title of no more than 15 words. The legend itself should be succinct, while still explaining all symbols and abbreviations. Avoid lengthy descriptions of methods.
+Figure legends should briefly describe the key messages of the figure such that the figure can stand alone from the main text. However, all figures should also be discussed in the article text. Each legend should have a concise title of no more than 15 words. The legend itself should be succinct, while still explaining all symbols and abbreviations. Avoid lengthy descriptions of methods.  
 
 For any figures reproduced from another publication (as long as appropriate permission has been obtained from the copyright holder —see under the heading 'Submission'), please include a line in the legend to state that: 'This figure has been reproduced with kind permission from [include original publication citation]'.
 
@@ -166,3 +166,9 @@ or bullet points
 * and like this.
     + Use indentation
         - for sub-items
+        
+# Additional advice to authors
+
+The content above is either taken directly from the F1000Research \LaTeX\ template, or has been adpated to suit R Markdown.  Here we provide some additional advice to authors based on our own and other users' experiences of article submission to F1000Research, which will hopefully make your own journey smoother.  If you would like to contribute to this, please contact us at ![https://github.com/grimbough/BiocWorkflowTools/issues/4](https://github.com/grimbough/BiocWorkflowTools/issues/4)
+
+- When writing figure or tables captions do not use acronyms or abbreviations without explanation in the legend itself, even this has been addressed in the main text.  F1000Research require each figure and table to be able to stand alone from the rest of the manuscript. *Thanks to Mike Love ![@mikelove](https://twitter.com/mikelove)*
