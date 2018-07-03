@@ -169,6 +169,6 @@ or bullet points
         
 # Additional advice to authors
 
-The content above is either taken directly from the F1000Research \LaTeX\ template, or has been adpated to suit R Markdown.  Here we provide some additional advice to authors based on our own and other users' experiences of article submission to F1000Research, which will hopefully make your own journey smoother.  If you would like to contribute to this, please contact us at ![https://github.com/grimbough/BiocWorkflowTools/issues/4](https://github.com/grimbough/BiocWorkflowTools/issues/4)
+The content above is either taken directly from the F1000Research \LaTeX\ template, or has been adpated to suit R Markdown.  Here we provide some additional advice to authors based on our own and other users' experiences of article submission to F1000Research, which will hopefully make your own journey smoother.  If you would like to contribute to this, please contact us at [https://github.com/grimbough/BiocWorkflowTools/issues/4](https://github.com/grimbough/BiocWorkflowTools/issues/4)
 
-- When writing figure or tables captions do not use acronyms or abbreviations without explanation in the legend itself, even this has been addressed in the main text.  F1000Research require each figure and table to be able to stand alone from the rest of the manuscript. *Thanks to Mike Love ![@mikelove](https://twitter.com/mikelove)*
+- When writing figure or tables captions do not use acronyms or abbreviations without explanation in the legend itself, even this has been addressed in the main text.  F1000Research require each figure and table to be able to stand alone from the rest of the manuscript. *Thanks to Mike Love [\@mikelove](https://twitter.com/mikelove)*
