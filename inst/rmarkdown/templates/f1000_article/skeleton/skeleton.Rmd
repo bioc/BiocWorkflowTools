@@ -15,8 +15,8 @@ output: BiocWorkflowTools::f1000_article
 
 **Bioconductor version**: `r BiocInstaller::biocVersion()`
 
-<!--  Update the name of the package below to be the name of the workflow package you are working on -->
-**Package**: `r packageVersion("ExampleWorkflow")`
+<!--  Update the name of the package below to be the name of the workflow package you are working on  
+**Package**: `r packageVersion("base")` -->
 
 # Introduction
 

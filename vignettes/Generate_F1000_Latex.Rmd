@@ -17,6 +17,16 @@ The intention of this package is to provide tools to assist in converting betwee
 
 The current functionality assumes you have developed, or a planning to develop, a workflow in Rmarkdown, and aims to make the creation of a LaTeX document suitable for submission to F1000Research as straightforward as possible.
 
+# Citing this work
+
+If you make use of **BiocWorkflowTools** please consider citing its accompanying publication:
+
+```{r, citation, eval = TRUE, echo = FALSE}
+citation('BiocWorkflowTools')
+```
+
+# Package installation
+
 Before we can begin you need to install the library.  
 
 ```{r loadLibs, eval=FALSE}
@@ -97,9 +107,9 @@ sessionInfo()
 
 # Acknowledgements and funding
 
-Funding for continued development and maintenance of this package is currently provided by the German Network for Bioinformatics Infrastructure (de.NBI).
+Funding for continued development and maintenance of this package is currently provided by the German Network for Bioinformatics Infrastructure (de.NBI) Förderkennzeichen Nr. 031A537 B.
 
-```{r, include_logo, out.width="50%", echo=FALSE}
+```{r, include_logo, out.width="60%", echo=FALSE}
 knitr::include_graphics("denbi_logo.jpg")
 ```
 
