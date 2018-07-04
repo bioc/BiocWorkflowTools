@@ -19,10 +19,10 @@ The current functionality assumes you have developed, or a planning to develop, 
 
 # Citing this work
 
-If you make use of **BiocWorkflowTools** please consider citing its accompanying publication:
+If you make use of **BiocWorkflowTools** please consider citing its accompanying publication in your acknowledgements:
 
-```{r, citation, eval = TRUE, echo = FALSE}
-citation('BiocWorkflowTools')
+```{r, citation, eval = TRUE, echo = FALSE, results = 'asis'}
+print(citation('BiocWorkflowTools'), style = "HTML")
 ```
 
 # Package installation
