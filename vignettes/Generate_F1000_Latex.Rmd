@@ -30,8 +30,9 @@ print(citation('BiocWorkflowTools'), style = "HTML")
 Before we can begin you need to install the library.  
 
 ```{r loadLibs, eval=FALSE}
-source("http://www.bioconductor.org/biocLite.R")
-biocLite('BiocWorkflowTools')
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install('BiocWorkflowTools')
 ```
 
 # Creating a new workflow document
