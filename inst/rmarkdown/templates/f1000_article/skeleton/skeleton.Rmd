@@ -13,7 +13,7 @@ output: BiocWorkflowTools::f1000_article
 
 **R version**: `r R.version.string`
 
-**Bioconductor version**: `r BiocInstaller::biocVersion()`
+**Bioconductor version**: `r BiocInstaller::valid()`
 
 <!--  Update the name of the package below to be the name of the workflow package you are working on  
 **Package**: `r packageVersion("base")` -->
