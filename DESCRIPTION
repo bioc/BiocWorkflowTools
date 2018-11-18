@@ -10,7 +10,9 @@ Description: Provides functions to ease the transition between
         Workflow.
 License: MIT + file LICENSE
 Depends: R (>= 3.4)
-Imports: BiocStyle, bookdown, devtools, git2r, httr, knitr, rmarkdown, rstudioapi, stringr, tools, utils
+Imports: BiocStyle, bookdown, devtools, git2r, 
+    httr, knitr, rmarkdown, rstudioapi, stringr, 
+    tools, utils, usethis
 NeedsCompilation: no
 VignetteBuilder: knitr
 biocViews: Software, ReportWriting
