@@ -9,7 +9,7 @@
 #' @return File path to the R Markdown vignete (invisibly).
 #' @examples
 #' createBiocWorkflow(file.path(tempdir(), "MyWorkflow"), open = FALSE)
-#' @importFrom devtools create
+#' @importFrom usethis create_package
 #' @importFrom rmarkdown draft
 #' @importFrom rstudioapi isAvailable openProject
 #' @export
@@ -19,7 +19,7 @@ createBiocWorkflow <- function(path,
                                ...,
                                open = rstudio) {
   
-  create(path, c(description, list(Workflow = "true")), rstudio = rstudio, ...)
+  create_package(path, c(description, list(Workflow = "true")), rstudio = rstudio, ...)
   vignette <- file.path(path, "vignettes", paste(basename(path), "Rmd", sep="."))
   dir.create( dirname(vignette) )
   vignette <- draft(vignette,
