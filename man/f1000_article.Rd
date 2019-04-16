@@ -16,7 +16,7 @@ f1000_article(toc = FALSE, number_sections = FALSE, fig_width = 5.67,
 
 \item{fig_width}{Default width (in inches) for figures}
 
-\item{fig_height}{Default width (in inches) for figures}
+\item{fig_height}{Default height (in inches) for figures}
 
 \item{fig_align}{Default alignment of figures. Possible values are "center" (default) "left" and "right".}
 

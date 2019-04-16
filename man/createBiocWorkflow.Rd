@@ -5,7 +5,7 @@
 \title{Create a New Bioconductor Workflow Package}
 \usage{
 createBiocWorkflow(path, description = getOption("devtools.desc"),
-  rstudio = TRUE, ..., open = rstudio)
+  rstudio = TRUE, open = rstudio)
 }
 \arguments{
 \item{path}{location to create new package. The last component of the path will be used as the package name.}
@@ -14,12 +14,10 @@ createBiocWorkflow(path, description = getOption("devtools.desc"),
 
 \item{rstudio}{if \code{TRUE}, creates an RStudio project file.}
 
-\item{...}{other arguments passed to \code{\link{create}}.}
-
-\item{open}{if \code{TRUE}, opens the RStudio project.}
+\item{open}{if \code{TRUE}, opens the project in a new RStudio session.}
 }
 \value{
-File path to the R Markdown vignete (invisibly).
+File path to the R Markdown vignette (invisibly).
 }
 \description{
 Uses \code{\link{create}} to set up a skeleton for a new Bioconductor workflow package.
