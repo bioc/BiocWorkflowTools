@@ -20,7 +20,7 @@ createBiocWorkflow(path, description = getOption("devtools.desc"),
 File path to the R Markdown vignette (invisibly).
 }
 \description{
-Uses \code{\link{create}} to set up a skeleton for a new Bioconductor workflow package.
+Uses \code{\link{create_package}} to set up a skeleton for a new Bioconductor workflow package.
 }
 \examples{
 createBiocWorkflow(file.path(tempdir(), "MyWorkflow"), open = FALSE)

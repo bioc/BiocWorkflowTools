@@ -1,6 +1,6 @@
 #' Create a New Bioconductor Workflow Package
 #' 
-#' Uses \code{\link{create}} to set up a skeleton for a new Bioconductor workflow package.
+#' Uses \code{\link{create_package}} to set up a skeleton for a new Bioconductor workflow package.
 #' @param path location to create new package. The last component of the path will be used as the package name.
 #' @param description list of description values to override default values or add additional values.
 #' @param rstudio if \code{TRUE}, creates an RStudio project file.
