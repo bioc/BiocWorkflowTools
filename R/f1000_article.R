@@ -157,7 +157,12 @@ f1000_article <- function(toc = FALSE,
   
   ## override the default document template which is used in order to retain
   ## some original template-dependent rmarkdown functionality
-  config$pandoc$args[ match("--template", config$pandoc$args) + 1L ] <- template
+  pos <- match("--template", config$pandoc$args)
+  if (is.na(pos)) {
+    config$pandoc$args <- c(config$pandoc$args, "--template")
+    pos <- length(config$pandoc$args)
+  }
+  config$pandoc$args[ pos + 1L ] <- template
   
   config
 }
