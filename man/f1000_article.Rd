@@ -4,10 +4,18 @@
 \alias{f1000_article}
 \title{F1000Research article format}
 \usage{
-f1000_article(toc = FALSE, number_sections = FALSE, fig_width = 5.67,
-  fig_height = fig_width, fig_align = "center", keep_tex = TRUE,
-  citation_package = "natbib", md_extensions = "+link_attributes",
-  pandoc_args = "--wrap=preserve", ...)
+f1000_article(
+  toc = FALSE,
+  number_sections = FALSE,
+  fig_width = 5.67,
+  fig_height = fig_width,
+  fig_align = "center",
+  keep_tex = TRUE,
+  citation_package = "natbib",
+  md_extensions = "+link_attributes",
+  pandoc_args = "--wrap=preserve",
+  ...
+)
 }
 \arguments{
 \item{toc}{\code{TRUE} to include a table of contents in the output}
@@ -26,7 +34,7 @@ f1000_article(toc = FALSE, number_sections = FALSE, fig_width = 5.67,
 or \code{biblatex}. Use \code{none} if neither package is to be used.}
 
 \item{md_extensions}{Markdown extensions to be added or removed from the
-default definition or R Markdown. See the \code{\link{rmarkdown_format}} for
+default definition or R Markdown. See the \code{\link[rmarkdown]{rmarkdown_format}} for
 additional details.}
 
 \item{pandoc_args}{Additional command line options to pass to pandoc}
@@ -34,7 +42,7 @@ additional details.}
 \item{...}{Arguments to \code{\link{pdf_document}}}
 }
 \value{
-R Markdown output format to pass to \code{\link{render}}
+R Markdown output format to pass to \code{\link[rmarkdown]{render}}
 }
 \description{
 Format for creating F1000Research software tool articles.

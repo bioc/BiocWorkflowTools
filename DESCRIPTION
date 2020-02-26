@@ -19,5 +19,4 @@ Collate:
     'createBiocWorkflow.R'
     'f1000_article.R'
     'uploadToOverleaf.R'
-    'markdownToLatex.R'
     'utils.R'
