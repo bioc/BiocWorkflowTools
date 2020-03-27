@@ -4,8 +4,12 @@
 \alias{createBiocWorkflow}
 \title{Create a New Bioconductor Workflow Package}
 \usage{
-createBiocWorkflow(path, description = getOption("devtools.desc"),
-  rstudio = TRUE, open = rstudio)
+createBiocWorkflow(
+  path,
+  description = getOption("devtools.desc"),
+  rstudio = TRUE,
+  open = rstudio
+)
 }
 \arguments{
 \item{path}{location to create new package. The last component of the path will be used as the package name.}
