@@ -131,7 +131,7 @@ You can again use the `fig.cap` option to provide the figure caption, and refere
 
 Alternatively, you can use the standard markdown syntax like so:
 
-![This is a smaller version of the same picture, inserted using the standard markdown syntax](frog.jpg){width=25%}
+![This is a smaller version of the same picture, inserted using the standard markdown syntax](frog.jpg){width=2cm height=2cm}
 
 Please give figures appropriate filenames, e.g.: figure1.pdf, figure2.png.
 
